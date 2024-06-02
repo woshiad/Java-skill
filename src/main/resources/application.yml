@@ -1,0 +1,70 @@
+server:
+  port: 8484
+
+spring:
+  jackson:
+    default-property-inclusion: ALWAYS
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:50013/xkh_ui_standard?nullCatalogMeansCurrent=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
+    username: mysqluser
+    password: 123asd!@#$
+
+#是否从consul拿取配置信息
+consul:
+  enabled: false  #true/false
+  host: 172.16.51.151
+  port: 8500
+
+
+es:
+  #地址
+  host: 172.16.55.125
+  #端口
+  port: 50020
+  #请求方式
+  scheme: http
+  #用户名
+  username: elastic
+  #用户密码
+  password: 123asd!@#$
+  #查询相关配置
+  search:
+    index: zjg_alarm
+    # 本级告警索引
+    zjg_alarm: event_analysis_result
+    # 上传告警索引
+    zjg_alarm_report: zjg_report_alarm_
+    # 所有告警索引别名
+    zjg_alarm_another: zjg_all_alarm
+
+
+kafka:
+  bootstrap_servers: 172.16.55.125:50004
+  #  bootstrap_servers: 172.16.51.96:50004
+  #  bootstrap_servers: 127.0.0.1:50004
+  producer:
+    key_serializer: org.apache.kafka.common.serialization.StringSerializer
+    value_serializer: org.apache.kafka.common.serialization.StringSerializer
+  consumer:
+    group_id: xkh-standard-java
+    enable_auto_commit: true
+    key_deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    value_deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    #    max_poll_records: 10
+    #    max_poll_interval_ms: 10
+    max_poll_records: 10
+    max_poll_interval_ms: 10
+    auto_offset_reset: earliest
+
+# 数据接入模块-解析规则获取日志group_id
+logKafka:
+  #  bootstrap_servers: 172.16.51.96:50004
+  group_id: ui_get_log
+  enable_auto_commit: false
+
+
+# 查看预处理后的数据
+data_handle:
+  group_id: access_data_handle
+  max_poll: 200
